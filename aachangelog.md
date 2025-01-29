@@ -19,6 +19,7 @@
 - Enhanced animations for error messages
 - Added async form submission handling
 - Improved social login button interactions
+- Added post-login navigation to dashboard
 - Added visual feedback for form submission
 
 ### Improved [2025-01-29]

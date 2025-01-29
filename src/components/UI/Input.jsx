@@ -11,17 +11,21 @@ const Input = ({
   onChange, 
   required = false, 
   error,
-  icon: Icon 
+  icon
 }) => {
   return (
     <div className="space-y-2">
-      <label htmlFor={name} className="block text-sm font-medium text-purple-900">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={name} className="block text-sm font-medium text-purple-900">
+          {label}
+        </label>
+      )}
       <div className="relative">
-        {Icon && (
+        {icon && (
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Icon className={`h-5 w-5 ${error ? 'text-red-400' : 'text-purple-400'}`} />
+            <div className={`h-5 w-5 ${error ? 'text-red-400' : 'text-purple-400'}`}>
+              {icon}
+            </div>
           </div>
         )}
         <motion.input
@@ -32,29 +36,27 @@ const Input = ({
           value={value}
           onChange={onChange}
           required={required}
-          whileFocus={{ scale: 1.01 }}
           className={`
-            w-full px-4 py-3 rounded-xl
-            ${Icon ? 'pl-10' : ''}
+            block w-full rounded-lg border
             ${error 
-              ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500' 
-              : 'border-purple-200 text-purple-900 placeholder-purple-400 focus:border-purple-500 focus:ring-purple-500/20'
+              ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500' 
+              : 'border-gray-300 focus:border-purple-500 focus:ring-purple-500'
             }
-            border
-            transition duration-200
-            hover:border-purple-400
-            bg-white
-            shadow-sm
+            ${icon ? 'pl-10' : 'pl-4'}
+            pr-4 py-3 text-gray-900 placeholder-gray-500
+            focus:outline-none focus:ring-1 sm:text-sm
           `}
+          whileFocus={{ scale: 1.01 }}
+          transition={{ duration: 0.2 }}
         />
         {error && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+            <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
           </div>
         )}
       </div>
       {error && (
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           className="mt-2 text-sm text-red-600"
@@ -67,15 +69,15 @@ const Input = ({
 };
 
 Input.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   type: PropTypes.string,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
   required: PropTypes.bool,
   error: PropTypes.string,
-  icon: PropTypes.elementType
+  icon: PropTypes.node
 };
 
 export default Input;

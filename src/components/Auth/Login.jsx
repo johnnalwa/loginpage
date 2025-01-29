@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import AuthLayout from '../../layouts/AuthLayout';
 import Input from '../UI/Input';
@@ -6,6 +7,7 @@ import Button from '../UI/Button';
 import { EnvelopeIcon, LockClosedIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -30,17 +32,17 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: '',
       }));
     }
   };
@@ -55,6 +57,8 @@ const Login = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       // Handle login logic here
       console.log('Form submitted:', { ...formData, rememberMe });
+      // Navigate to dashboard after successful login
+      navigate('/dashboard');
     } catch (error) {
       console.error('Login error:', error);
       setErrors({ submit: 'Failed to login. Please try again.' });
@@ -83,29 +87,29 @@ const Login = () => {
           )}
         </AnimatePresence>
 
-        <Input
-          label="Email address"
-          type="email"
-          name="email"
-          placeholder="Enter your email"
-          value={formData.email}
-          onChange={handleChange}
-          error={errors.email}
-          required
-          icon={EnvelopeIcon}
-        />
-        
-        <Input
-          label="Password"
-          type="password"
-          name="password"
-          placeholder="••••••••"
-          value={formData.password}
-          onChange={handleChange}
-          error={errors.password}
-          required
-          icon={LockClosedIcon}
-        />
+        <div className="space-y-1">
+          <Input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            placeholder="Email"
+            icon={<EnvelopeIcon />}
+            error={errors.email}
+          />
+        </div>
+
+        <div className="space-y-1">
+          <Input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            placeholder="Password"
+            icon={<LockClosedIcon />}
+            error={errors.password}
+          />
+        </div>
 
         <div className="flex items-center justify-between">
           <label className="flex items-center">
@@ -117,14 +121,9 @@ const Login = () => {
             />
             <span className="ml-2 text-sm text-gray-600">Remember me</span>
           </label>
-          <motion.a 
-            href="#" 
-            className="text-sm font-medium text-primary-600 hover:text-primary-500"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
+          <Link to="/forgot-password" className="text-sm font-medium text-primary-600 hover:text-primary-500">
             Forgot password?
-          </motion.a>
+          </Link>
         </div>
 
         <div className="space-y-4 pt-4">
@@ -205,16 +204,14 @@ const Login = () => {
           </div>
         </div>
 
-        <p className="text-center text-sm text-gray-600 mt-8">
+        <p className="text-center text-sm text-blue-600 mt-8">
           Dont have an account?{' '}
-          <motion.a 
-            href="#" 
-            className="font-semibold text-primary-600 hover:text-primary-500"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <Link 
+            to="/register" 
+            className="font-semibold text-primary-600 hover:text-primary-500 hover:underline"
           >
             Sign up for free
-          </motion.a>
+          </Link>
         </p>
       </form>
     </AuthLayout>
