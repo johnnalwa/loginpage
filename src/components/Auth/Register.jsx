@@ -3,26 +3,41 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AuthLayout from '../../layouts/AuthLayout';
 import Input from '../UI/Input';
 import Button from '../UI/Button';
-import { EnvelopeIcon, LockClosedIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { EnvelopeIcon, LockClosedIcon, ExclamationCircleIcon, UserIcon } from '@heroicons/react/24/outline';
 import { Link, useNavigate } from 'react-router-dom';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
+    phone: '',
     password: '',
     passwordCheck: '',
-    userType: 'candidate' // Default to candidate
+    userType: 'candidate',
+    termsAccepted: false
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+    }
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
+    }
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email';
+    }
+    if (!formData.phone) {
+      newErrors.phone = 'Phone number is required';
     }
     if (!formData.password) {
       newErrors.password = 'Password is required';
@@ -36,6 +51,9 @@ const Register = () => {
     }
     if (!formData.userType) {
       newErrors.userType = 'Please select a user type';
+    }
+    if (!formData.termsAccepted) {
+      newErrors.termsAccepted = 'You must accept the terms and conditions';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -91,7 +109,7 @@ const Register = () => {
       title="Create Account"
       subtitle="Add your credentials"
     >
-      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-sm">
+      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-2xl">
         {/* User Type Selection */}
         <div className="flex gap-4 justify-center mb-6">
           <label className="inline-flex items-center">
@@ -101,7 +119,7 @@ const Register = () => {
               value="candidate"
               checked={formData.userType === 'candidate'}
               onChange={() => handleUserTypeChange('candidate')}
-              className="form-radio text-purple-600 focus:ring-purple-500"
+              className="form-radio text-blue-600 focus:ring-blue-500"
             />
             <span className="ml-2">Candidate</span>
           </label>
@@ -112,7 +130,7 @@ const Register = () => {
               value="faculty"
               checked={formData.userType === 'faculty'}
               onChange={() => handleUserTypeChange('faculty')}
-              className="form-radio text-purple-600 focus:ring-purple-500"
+              className="form-radio text-blue-600 focus:ring-blue-500"
             />
             <span className="ml-2">Faculty</span>
           </label>
@@ -123,10 +141,63 @@ const Register = () => {
               value="employer"
               checked={formData.userType === 'employer'}
               onChange={() => handleUserTypeChange('employer')}
-              className="form-radio text-purple-600 focus:ring-purple-500"
+              className="form-radio text-blue-600 focus:ring-blue-500"
             />
             <span className="ml-2">Employer</span>
           </label>
+        </div>
+
+        {/* Name Fields */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <Input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleInputChange}
+              placeholder="First Name"
+              icon={<UserIcon />}
+              error={errors.firstName}
+            />
+            <AnimatePresence>
+              {errors.firstName && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex items-center text-red-500 text-sm"
+                >
+                  <ExclamationCircleIcon className="w-4 h-4 mr-1" />
+                  {errors.firstName}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <div className="space-y-1">
+            <Input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleInputChange}
+              placeholder="Last Name"
+              icon={<UserIcon />}
+              error={errors.lastName}
+            />
+            <AnimatePresence>
+              {errors.lastName && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex items-center text-red-500 text-sm"
+                >
+                  <ExclamationCircleIcon className="w-4 h-4 mr-1" />
+                  {errors.lastName}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Email Input */}
@@ -155,19 +226,49 @@ const Register = () => {
           </AnimatePresence>
         </div>
 
-        {/* Password Input */}
+        {/* Phone Input */}
         <div className="space-y-1">
-          <Input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            placeholder="Password"
-            icon={<LockClosedIcon />}
-            error={errors.password}
-          />
+          <div className={`relative ${errors.phone ? 'ring-1 ring-red-500' : ''}`}>
+            <PhoneInput
+              country="ke"
+              preferredCountries={['ke', 'tz', 'ug', 'et', 'rw', 'bi']}
+              enableSearch={true}
+              value={formData.phone}
+              onChange={(phone) => {
+                handleInputChange({
+                  target: {
+                    name: 'phone',
+                    value: phone
+                  }
+                });
+              }}
+              countryCodeEditable={false}
+              disableSearchIcon={true}
+              searchPlaceholder="Search country..."
+              containerClass="!w-full !h-[42px]"
+              inputClass={`!w-full !h-[42px] !pl-14 !pr-4 !text-sm !font-normal !bg-white !border !border-gray-300 !rounded-lg ${
+                errors.phone 
+                  ? '!border-red-500 focus:!ring-red-500 focus:!border-red-500' 
+                  : 'focus:!ring-blue-500 focus:!border-blue-500'
+              } focus:!ring-2 focus:!outline-none !transition-colors`}
+              buttonClass="!absolute !top-0 !bottom-0 !left-0 !w-12 !border-r !border-gray-300 !bg-gray-50 hover:!bg-gray-100 !rounded-l-lg !transition-colors !flex !items-center !justify-center"
+              dropdownClass="!w-[300px] !max-h-[300px] !overflow-y-auto !bg-white !mt-1 !rounded-lg !shadow-lg !border !border-gray-200 !z-50"
+              searchClass="!mx-2 !mt-2 !px-3 !py-2 !w-[calc(100%-1rem)] !text-sm !border !border-gray-300 !rounded-lg focus:!outline-none focus:!ring-2 focus:!ring-blue-500 focus:!border-blue-500"
+              countryClass="!px-4 !py-2.5 !text-sm hover:!bg-gray-50 !cursor-pointer !flex !items-center !gap-3"
+              inputProps={{
+                name: 'phone',
+                required: true,
+                className: '!text-gray-900 placeholder:text-gray-400',
+                placeholder: 'Phone Number',
+                style: {
+                  height: '42px',
+                  width: '100%'
+                }
+              }}
+            />
+          </div>
           <AnimatePresence>
-            {errors.password && (
+            {errors.phone && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -175,33 +276,101 @@ const Register = () => {
                 className="flex items-center text-red-500 text-sm"
               >
                 <ExclamationCircleIcon className="w-4 h-4 mr-1" />
-                {errors.password}
+                {errors.phone}
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
-        {/* Password Check Input */}
+        {/* Password Fields */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <Input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              placeholder="Password"
+              icon={<LockClosedIcon />}
+              error={errors.password}
+            />
+            <AnimatePresence>
+              {errors.password && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex items-center text-red-500 text-sm"
+                >
+                  <ExclamationCircleIcon className="w-4 h-4 mr-1" />
+                  {errors.password}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <div className="space-y-1">
+            <Input
+              type="password"
+              name="passwordCheck"
+              value={formData.passwordCheck}
+              onChange={handleInputChange}
+              placeholder="Confirm Password"
+              icon={<LockClosedIcon />}
+              error={errors.passwordCheck}
+            />
+            <AnimatePresence>
+              {errors.passwordCheck && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex items-center text-red-500 text-sm"
+                >
+                  <ExclamationCircleIcon className="w-4 h-4 mr-1" />
+                  {errors.passwordCheck}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Terms and Conditions */}
         <div className="space-y-1">
-          <Input
-            type="password"
-            name="passwordCheck"
-            value={formData.passwordCheck}
-            onChange={handleInputChange}
-            placeholder="Password check"
-            icon={<LockClosedIcon />}
-            error={errors.passwordCheck}
-          />
+          <label className="flex items-start space-x-3">
+            <input
+              type="checkbox"
+              name="termsAccepted"
+              checked={formData.termsAccepted}
+              onChange={(e) => handleInputChange({
+                target: {
+                  name: 'termsAccepted',
+                  value: e.target.checked
+                }
+              })}
+              className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"
+            />
+            <span className="text-sm text-gray-600">
+              I agree to the{' '}
+              <Link to="/terms" className="text-blue-600 hover:text-blue-800 hover:underline">
+                Terms and Conditions
+              </Link>
+              {' '}and{' '}
+              <Link to="/privacy" className="text-blue-600 hover:text-blue-800 hover:underline">
+                Privacy Policy
+              </Link>
+            </span>
+          </label>
           <AnimatePresence>
-            {errors.passwordCheck && (
+            {errors.termsAccepted && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="flex items-center text-red-500 text-sm"
+                className="flex items-center text-red-500 text-sm ml-7"
               >
                 <ExclamationCircleIcon className="w-4 h-4 mr-1" />
-                {errors.passwordCheck}
+                {errors.termsAccepted}
               </motion.div>
             )}
           </AnimatePresence>
