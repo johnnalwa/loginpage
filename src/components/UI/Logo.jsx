@@ -2,11 +2,16 @@
 
 const Logo = ({ className = "" }) => {
   return (
-    <img 
-      src="/assets/logo.png" 
-      alt="Logo" 
-      className={`${className} object-contain opacity-75`}
-    />
+    <div className={`flex items-center justify-center gap-2 ${className}`}>
+      <img 
+        src="/assets/logo.png" 
+        alt="Logo" 
+        className="h-8 w-8 object-contain opacity-75"
+      />
+      <span className="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
+        ConnectyFI
+      </span>
+    </div>
   );
 };
 
