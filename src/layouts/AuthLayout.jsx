@@ -4,10 +4,10 @@ import Logo from '../components/UI/Logo';
 
 const AuthLayout = ({ children, title, subtitle }) => {
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-white">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-white dark:bg-gray-900">
       {/* Left side - Decorative */}
       <div className="lg:w-1/2 lg:fixed lg:inset-y-0 lg:left-0">
-        <div className="h-full relative overflow-hidden bg-gradient-to-br from-purple-600 via-purple-500 to-blue-500">
+        <div className="h-full relative overflow-hidden bg-gradient-to-br from-blue-600 via-violet-500 to-purple-500">
           {/* Animated background patterns */}
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
           <div className="absolute inset-0 bg-gradient-radial from-white/10 to-transparent"></div>
@@ -30,8 +30,8 @@ const AuthLayout = ({ children, title, subtitle }) => {
                 transition={{ duration: 0.6 }}
                 className="mb-8"
               >
-                <Logo className="h-12 w-auto mx-auto mb-8 contrast-75 brightness-90" />
-                <div className="w-24 h-24 mx-auto mb-6 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg">
+                <Logo className="h-12 w-auto mx-auto mb-8" />
+                <div className="w-24 h-24 mx-auto mb-6 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg">
                   <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
@@ -59,7 +59,7 @@ const AuthLayout = ({ children, title, subtitle }) => {
                     </div>
                     <div className="flex-1 text-left">
                       <h3 className="font-semibold text-white drop-shadow">Academic Excellence</h3>
-                      <p className="text-sm text-white drop-shadow">Connect with leading universities worldwide</p>
+                      <p className="text-sm text-white/90 drop-shadow">Connect with leading universities worldwide</p>
                     </div>
                   </div>
                 </motion.div>
@@ -78,7 +78,7 @@ const AuthLayout = ({ children, title, subtitle }) => {
                     </div>
                     <div className="flex-1 text-left">
                       <h3 className="font-semibold text-white drop-shadow">Industry Connections</h3>
-                      <p className="text-sm text-white drop-shadow">Access top companies and research labs</p>
+                      <p className="text-sm text-white/90 drop-shadow">Access top companies and research labs</p>
                     </div>
                   </div>
                 </motion.div>
@@ -94,17 +94,17 @@ const AuthLayout = ({ children, title, subtitle }) => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="min-h-screen flex flex-col justify-center px-8 py-16 md:px-16"
+          className="min-h-screen flex flex-col justify-center px-4 py-10 sm:px-6 lg:px-8"
         >
           <div className="max-w-md w-full mx-auto">
             <div className="mb-8">
               <Logo className="w-32 h-8 mb-6" />
-              <h2 className="text-3xl font-bold text-purple-900 mb-2">{title}</h2>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{title}</h2>
               {subtitle && (
-                <p className="text-purple-600">{subtitle}</p>
+                <p className="text-gray-600 dark:text-gray-400">{subtitle}</p>
               )}
             </div>
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-purple-100">
+            <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-8 ring-1 ring-gray-900/5 dark:ring-white/10">
               {children}
             </div>
           </div>

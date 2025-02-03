@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 
 const Button = ({ children, type = "button", onClick, fullWidth = false, variant = 'primary' }) => {
   const variants = {
-    primary: 'bg-gradient-to-r from-purple-600 to-blue-500 text-white hover:from-purple-700 hover:to-blue-600 shadow-lg',
-    outline: 'border-2 border-purple-600 text-purple-700 hover:bg-purple-50 shadow-md',
-    ghost: 'text-purple-700 hover:bg-purple-50'
+    primary: 'py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600',
+    outline: 'py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:border-gray-700 dark:text-gray-400 dark:hover:text-blue-500 dark:hover:border-blue-600 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600',
+    ghost: 'py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
   };
 
   return (
@@ -15,13 +15,9 @@ const Button = ({ children, type = "button", onClick, fullWidth = false, variant
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       className={`
-        ${fullWidth ? 'w-full' : ''}
         ${variants[variant]}
-        font-semibold py-3 px-6 rounded-xl
-        transform transition-colors duration-200
-        focus:outline-none focus:ring-2 focus:ring-purple-500/50
-        disabled:opacity-50 disabled:cursor-not-allowed
-        disabled:hover:scale-100
+        ${fullWidth ? 'w-full' : ''}
+        transition-all duration-200
       `}
     >
       {children}

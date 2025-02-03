@@ -16,14 +16,14 @@ const Input = ({
   return (
     <div className="space-y-2">
       {label && (
-        <label htmlFor={name} className="block text-sm font-medium text-purple-900">
+        <label htmlFor={name} className="block text-sm font-medium mb-2 dark:text-white">
           {label}
         </label>
       )}
       <div className="relative">
         {icon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <div className={`h-5 w-5 ${error ? 'text-red-400' : 'text-purple-400'}`}>
+          <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+            <div className={`h-4 w-4 ${error ? 'text-red-400' : 'text-gray-400'}`}>
               {icon}
             </div>
           </div>
@@ -37,21 +37,21 @@ const Input = ({
           onChange={onChange}
           required={required}
           className={`
-            block w-full rounded-lg border
+            py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500
+            disabled:opacity-50 disabled:pointer-events-none
+            dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
+            ${icon ? 'pl-11' : ''}
             ${error 
-              ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500' 
-              : 'border-gray-300 focus:border-purple-500 focus:ring-purple-500'
+              ? 'border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-400 dark:focus:border-red-400 dark:focus:ring-red-400' 
+              : 'border-gray-200 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:focus:border-blue-500 dark:focus:ring-blue-500'
             }
-            ${icon ? 'pl-10' : 'pl-4'}
-            pr-4 py-3 text-gray-900 placeholder-gray-500
-            focus:outline-none focus:ring-1 sm:text-sm
           `}
           whileFocus={{ scale: 1.01 }}
           transition={{ duration: 0.2 }}
         />
         {error && (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
+          <div className="absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
+            <ExclamationCircleIcon className="h-4 w-4 text-red-500" aria-hidden="true" />
           </div>
         )}
       </div>
@@ -59,7 +59,7 @@ const Input = ({
         <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-2 text-sm text-red-600"
+          className="text-sm text-red-600 dark:text-red-400"
         >
           {error}
         </motion.p>
