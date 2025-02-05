@@ -1,12 +1,13 @@
+// App.jsx
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
+import ChatLayout from './components/Chat/ChatLayout';
 import PrelineScript from './components/UI/PrelineScript';
 
 function App() {
   useEffect(() => {
-    // Check for dark mode preference
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
     } else {
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/chat" element={<ChatLayout />} />
       </Routes>
     </div>
   );
