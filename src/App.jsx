@@ -1,10 +1,10 @@
-// App.jsx
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import ChatLayout from './components/Chat/ChatLayout';
 import PrelineScript from './components/UI/PrelineScript';
+import { ApplicationProvider } from './context/ApplicationContext';
 
 function App() {
   useEffect(() => {
@@ -16,14 +16,16 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900">
-      <PrelineScript />
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/chat" element={<ChatLayout />} />
-      </Routes>
-    </div>
+    <ApplicationProvider>
+      <div className="min-h-screen bg-white dark:bg-slate-900">
+        <PrelineScript />
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/chat" element={<ChatLayout />} />
+        </Routes>
+      </div>
+    </ApplicationProvider>
   );
 }
 
